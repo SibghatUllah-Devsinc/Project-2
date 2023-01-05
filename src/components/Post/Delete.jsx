@@ -1,13 +1,11 @@
 import classes from './PostItem.module.css';
 
-
-
-
 const DeleteItem = (props) => {
+
 const DeletePost = ()=>{
-  // const userPosts = props.userPost.filter((post)=> post.id !== props.id)
   props.deletedPost(props.id)
 }
+
   return (
     <li className={classes.item}>
       <div>

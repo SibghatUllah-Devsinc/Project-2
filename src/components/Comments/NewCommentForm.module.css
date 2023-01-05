@@ -1,0 +1,42 @@
+.form {
+  margin-top: 1rem;
+  position: relative;
+  text-align: center;
+}
+
+
+.control {
+  margin-bottom: 0.5rem;
+}
+
+.control label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 140%;
+}
+
+.control textarea {
+  font: inherit;
+  padding: 0.35rem;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  border: 1px solid #c1d1d1;
+  display: block;
+  width: 140%;
+  font-size: 1.25rem;
+}
+
+.control textarea:focus {
+  background-color: #cbf8f8;
+  outline-color: #741188;;
+}
+.actions {
+  padding-top: 2% !important;
+  width: 100% !important;
+}
+.actions button {
+  font-size: 1.25rem;
+  text-align: center;
+}

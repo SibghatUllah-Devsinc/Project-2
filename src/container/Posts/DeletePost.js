@@ -10,24 +10,23 @@ const DeletePost = () => {
   const history = useHistory()
   const [localpost , setLocalPost] = useState()
   const [allPosts , setAllPosts] = useState()
-  console.log(ctx.userId);
+
+  const updatePosts = (filterPost)=>{
+    const userPosts = allPosts.filter((post)=> post.id !== filterPost)
+    localStorage.setItem("posts", JSON.stringify(userPosts));
+    history.push("/home");
+  }
+
 useEffect(()=>{
   const localPosts = JSON.parse(localStorage.getItem('posts'));
   setAllPosts(localPosts)
   const userPosts = localPosts.filter((post)=> post.userId === ctx.userId)
   setLocalPost(userPosts)
 },[ctx.userId])
-console.log(localpost)
+
   if ( (!localpost || localpost.length === 0)){
       return <NoPostsFound/>
   }
-
-const updatePosts = (filterPost)=>{
-  const userPosts = allPosts.filter((post)=> post.id !== filterPost)
-  console.log(userPosts)
-  localStorage.setItem("posts", JSON.stringify(userPosts));
-  history.push("/home");
-}
 
   return (
     <Fragment>

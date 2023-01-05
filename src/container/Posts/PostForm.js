@@ -9,22 +9,20 @@ const PostForm = (props) => {
   const [isEntered, setIsEntered]=useState(false)
   const titleInputRef = useRef();
   const textInputRef = useRef();
-  function submitFormHandler(event) {
-    event.preventDefault();
 
+  const submitFormHandler =(event) => {
+    event.preventDefault();
     const enteredAuthor = titleInputRef.current.value;
     const enteredText = textInputRef.current.value;
     const localPosts = JSON.parse(localStorage.getItem('posts'));
-    console.log(localPosts.length)
     const currentPost = localPosts.length + 1
     const userId = ctx.userId
-    console.log(userId)
     props.onAddPost({ id:currentPost, userId:userId,title: enteredAuthor, body: enteredText });
   }
-  function focusHandler(){
+  const focusHandler = ()=>{
      setIsEntered(true)
   }
-  function clickHandler(){
+  const clickHandler=()=>{
     setIsEntered(false)
   }
 

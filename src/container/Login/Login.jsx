@@ -4,13 +4,11 @@ import Card from '../../components/UI/Card/Card';
 import classes from './Login.module.css';
 import {useHistory} from "react-router-dom"
 
-
 const formFunction = (state,action) => {
   if (action.type === "NAME_INPUT" ){
     return {...state, nameValue:action.val, nameIsValid:action.val.trim().length > 1};
   }
   if (action.type === "NAME_BLUR"){
-    console.log(state.nameValue)
     return {...state,nameValue:state.nameValue, nameIsValid:state.nameValue.trim().length > 1}
   }
   if (action.type === "EMAIL_INPUT" ){
@@ -27,16 +25,54 @@ const formFunction = (state,action) => {
   }
   return {nameValue:"", nameIsValid:false,emailValue:"", emailIsValid:false, passwordValue:"", passwordIsValid:false}
 }
-
-
-
 const Login = (props) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formIsValid, setFormIsValid] = useState(false);
   const [formState, dispatchForm] = useReducer(formFunction,{nameValue:"", nameIsValid:null, emailValue:"", emailIsValid:null, passwordValue:"", passwordIsValid:null})
    var history = useHistory();
 
-  useEffect(()=>{
+  const nameChangeHandler = (event) => {
+    dispatchForm({type:"NAME_INPUT", val:event.target.value});
+  };
+  const emailChangeHandler = (event) => {
+    dispatchForm({type:"EMAIL_INPUT", val:event.target.value});
+  };
+  const passwordChangeHandler = (event) => {
+    dispatchForm({type:"PASSWORD_INPUT", val:event.target.value})
+  };
+  const validateNameHandler = () => {
+    dispatchForm({type:"NAME_BLUR"});
+  };
+  const validateEmailHandler = () => {
+    dispatchForm({type:"EMAIL_BLUR"});
+  };
+  const validatePasswordHandler = () => {
+    dispatchForm({type:"Blur_Password"})
+  };
+  const submitHandler = (event) => {
+    event.preventDefault();
+    props.onLogin(formState.emailValue, formState.passwordValue);
+  };
+  const switchAuthModeHandler = () => {
+    setIsLogin((prevState) => !prevState);
+  };
+const registerUser = () => {
+    if(localStorage.getItem("user") == null){
+      localStorage.setItem("user", '[]');
+      } 
+      const existingUser = JSON.parse(localStorage.getItem('user'));
+      const userId = existingUser.length + 1 
+      existingUser.push({
+        name:formState.nameValue,
+        email:formState.emailValue,
+        password:formState.passwordValue,
+        userId:"a"+ userId
+      });
+      localStorage.setItem('user', JSON.stringify(existingUser))
+      history.push("/");
+   }
+
+   useEffect(()=>{
     const myTimeOut = setTimeout(() => {
      if(!isLogin){
       setFormIsValid(
@@ -48,58 +84,10 @@ const Login = (props) => {
       }
     },300)
     return ()=> {
-      console.log("Clear TimeOut Called");
       clearTimeout(myTimeOut)
     }
-
   },[formState.emailIsValid, formState.passwordIsValid, formState.nameIsValid,isLogin])
-  
-  const nameChangeHandler = (event) => {
-    dispatchForm({type:"NAME_INPUT", val:event.target.value});
-  };
-  const emailChangeHandler = (event) => {
-    dispatchForm({type:"EMAIL_INPUT", val:event.target.value});
-  };
 
-  const passwordChangeHandler = (event) => {
-    dispatchForm({type:"PASSWORD_INPUT", val:event.target.value})
-  };
-  const validateNameHandler = () => {
-    dispatchForm({type:"NAME_BLUR"});
-  };
-
-  const validateEmailHandler = () => {
-    dispatchForm({type:"EMAIL_BLUR"});
-  };
-
-  const validatePasswordHandler = () => {
-    dispatchForm({type:"Blur_Password"})
-
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    props.onLogin(formState.emailValue, formState.passwordValue);
-  };
-  const switchAuthModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
-  };
-
-  const registerUser = () => {
-    if(localStorage.getItem("user") == null){
-      localStorage.setItem("user", '[]');
-      } 
-      var existingUser = JSON.parse(localStorage.getItem('user'));
-      const userId = existingUser.length + 1 
-      existingUser.push({
-        name:formState.nameValue,
-        email:formState.emailValue,
-        password:formState.passwordValue,
-        userId:"a"+ userId
-      });
-      localStorage.setItem('user', JSON.stringify(existingUser))
-      history.push("/");
-   }
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
@@ -148,9 +136,3 @@ const Login = (props) => {
 };
 
 export default Login;
-
-
-
-
-
-
