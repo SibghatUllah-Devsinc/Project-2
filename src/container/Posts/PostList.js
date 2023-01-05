@@ -3,8 +3,8 @@ import PostItem from '../../components/Post/PostItem';
 import classes from './PostList.module.css';
 
 const PostList = (props) => {
-  
- var posts = props.allPosts
+ const posts = props.allPosts
+ 
   return (
     <Fragment>
       <ul className={classes.list}>

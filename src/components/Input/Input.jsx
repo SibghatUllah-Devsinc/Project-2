@@ -2,6 +2,7 @@ import React from 'react'
 import classes from '../../container/Login/Login.module.css'
 
 function Input(props){
+
     return <div
     className={`${classes.control} ${
       props.isValid === false ? classes.invalid : ''
@@ -19,10 +20,3 @@ function Input(props){
 }
 
 export default Input
-
-
-
-
-
-
-

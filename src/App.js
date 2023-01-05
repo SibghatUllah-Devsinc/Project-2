@@ -7,26 +7,18 @@ import Context from "./components/Context/Auth-Context";
 import { useHistory } from "react-router-dom";
 import AddPost from "./container/Posts/AddPost";
 import DeletePost from "./container/Posts/DeletePost";
+import PrivateRoute from "./container/Private Route/PrivateRoute";
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState('')
   var history = useHistory();
-  useEffect(() => {
-    const storedIsLoggedInInformation = localStorage.getItem("isLoggedIn");
-    if (storedIsLoggedInInformation === "1") {
-      setIsLoggedIn(true);
-      console.log(userId)
-    }
-  }, [setIsLoggedIn, userId]);
 
   const loginHandler = (email, password) => {
-    var existingUsers = JSON.parse(localStorage.getItem("user"));
-    console.log(existingUsers);
-    var foundUser = existingUsers.find((user) => user.email === email);
+    const existingUsers = JSON.parse(localStorage.getItem("user"));
+    const foundUser = existingUsers.find((user) => user.email === email);
     const currentId = foundUser.userId
-    console.log(currentId);
     setUserId(currentId)
-    console.log(userId)
     if (foundUser.password === password) {
       localStorage.setItem("isLoggedIn", "1");
       setIsLoggedIn(true);
@@ -35,12 +27,18 @@ function App() {
       alert("Sorry Wrong Password");
     }
   };
-console.log(userId);
   const logoutHandler = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
     history.push("/");
   };
+
+  useEffect(() => {
+    const storedIsLoggedInInformation = localStorage.getItem("isLoggedIn");
+    if (storedIsLoggedInInformation === "1") {
+      setIsLoggedIn(true);
+    }
+  }, [setIsLoggedIn, userId]);
 
   return (
     <Context.Provider value={{ isLoggedIn: isLoggedIn, userId:userId }}>
@@ -51,29 +49,17 @@ console.log(userId);
             <Redirect to="/login" />
           </Route>
           <Route path="/login">
-            {!isLoggedIn && <Login onLogin={loginHandler} />}
+          <Login onLogin={loginHandler} />
           </Route>
-          <Route path="/home" exact>
-            {isLoggedIn ? (
-              <Home onLogout={logoutHandler} />
-            ) : (
-              <Login onLogin={loginHandler} />
-            )}
-          </Route>
-          <Route path="/addPost">
-          {isLoggedIn ? (
-            <AddPost />
-            ) : (
-              <Login onLogin={loginHandler} />
-            )}     
-          </Route>
-          <Route path="/deletePost">
-          {isLoggedIn ? (
-            <DeletePost />
-            ) : (
-              <Login onLogin={loginHandler} />
-            )}     
-          </Route>
+          <PrivateRoute path="/home" exact>
+          <Home onLogout={logoutHandler} />
+          </PrivateRoute>
+          <PrivateRoute path="/addPost" exact>
+          <AddPost />
+          </PrivateRoute>
+          <PrivateRoute path="/deletePost" exact>
+          <DeletePost />
+          </PrivateRoute>
         </Switch>
       </main>
     </Context.Provider>

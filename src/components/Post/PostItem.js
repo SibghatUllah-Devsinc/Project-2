@@ -1,11 +1,16 @@
 import classes from './PostItem.module.css';
 import { useState } from 'react';
-// import Comments from '../Comments/CommentsList'
+import Comments from '../../container/Comments/CommentsList'
+import NewCommentForm from "../Comments/NewCommentForm"
 
 const PostItem = (props) => {
-  const [showComment, setShowComment]=useState()
+const [showComment , setShowComment]=useState()
+const [state,setState]=useState(false)
 const showComments = ()=>{
   setShowComment((prevState)=> !prevState)
+}
+const updateComments= ()=>{
+setState((prev)=>!prev)
 }
   return (
     <li className={classes.item}>
@@ -18,7 +23,10 @@ const showComments = ()=>{
         <button className={classes.loadButton} onClick={showComments}>Load Comments</button>
         </div>
             {showComment&&
-            {/* <Comments  postId={props.id}/> */}
+            <>
+            <Comments  postId={props.id} refresh={state}/>
+            <NewCommentForm postId={props.id} updateComment={updateComments}/>
+            </>
             }
       </div>
     </li>
