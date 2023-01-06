@@ -3,20 +3,24 @@ import classes from './NewCommentForm.module.css';
 import newContext from '../../components/Context/Auth-Context';
 
 const NewCommentForm = (props) => {
+  const {updateComment, postId}=props
   const commentTextRef = useRef();
   const ctx = useContext(newContext)
 
 const submitFormHandler=(event)=>{
   event.preventDefault()
- const existingComments = JSON.parse(
-    localStorage.getItem(`comments${props.postId}`)
-  );
-  
-  const userId = ctx.userId
-  const newCommentId = existingComments.length + 1
-  existingComments.push({userID:userId,id:newCommentId,postId:props.postId ,body:commentTextRef.current.value});
-  localStorage.setItem(`comments${props.postId}`, JSON.stringify(existingComments))
-  props.updateComment()
+  if(commentTextRef.length>0){
+    const existingComments = JSON.parse(
+      localStorage.getItem(`comments${postId}`)
+    );
+    const userId = ctx.userId
+    const newCommentId = existingComments.length + 1
+    existingComments.push({userID:userId,id:newCommentId,postId:postId ,body:commentTextRef.current.value});
+    localStorage.setItem(`comments${postId}`, JSON.stringify(existingComments))
+    updateComment()
+  }else{
+        alert("Input field can't be empty")
+  }
 }
 
   return (

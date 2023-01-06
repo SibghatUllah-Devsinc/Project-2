@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
-import newContext from '../../components/Context/Auth-Context';
+import {getItem} from "../../api/posts";
 
 const PrivateRoute=({ children, ...rest })=> {
-  const ctx = useContext(newContext)
+
   return (
     <Route
       {...rest}
       render={() => {
-        return ctx.isLoggedIn  ? (
+        return getItem("isLoggedIn")  ? (
           children
         ) : (
           <Redirect to="/login" />

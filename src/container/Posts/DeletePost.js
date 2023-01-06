@@ -4,6 +4,7 @@ import classes from './PostList.module.css';
 import NoPostsFound from '../../components/Post/NoPostsFound';
 import newContext from '../../components/Context/Auth-Context';
 import {useHistory} from "react-router-dom"
+import {getItem,setItem} from "../../api/posts";
 
 const DeletePost = () => {
   const ctx = useContext(newContext)
@@ -13,12 +14,12 @@ const DeletePost = () => {
 
   const updatePosts = (filterPost)=>{
     const userPosts = allPosts.filter((post)=> post.id !== filterPost)
-    localStorage.setItem("posts", JSON.stringify(userPosts));
+    setItem("posts", userPosts);
     history.push("/home");
   }
 
 useEffect(()=>{
-  const localPosts = JSON.parse(localStorage.getItem('posts'));
+  const localPosts = JSON.parse(getItem('posts'));
   setAllPosts(localPosts)
   const userPosts = localPosts.filter((post)=> post.userId === ctx.userId)
   setLocalPost(userPosts)
