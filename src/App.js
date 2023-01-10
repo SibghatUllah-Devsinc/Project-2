@@ -7,7 +7,8 @@ import Context from "./components/Context/Auth-Context";
 import { useHistory } from "react-router-dom";
 import AddPost from "./container/Posts/AddPost";
 import DeletePost from "./container/Posts/DeletePost";
-import PrivateRoute from "./container/Private Route/PrivateRoute";
+import PrivateRoute from "./container/Utils/PrivateRoute";
+import {getItem,setItem} from "../src/api/posts";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,12 +16,12 @@ function App() {
   var history = useHistory();
 
   const loginHandler = (email, password) => {
-    const existingUsers = JSON.parse(localStorage.getItem("user"));
+    const existingUsers = JSON.parse(getItem("user"));
     const foundUser = existingUsers.find((user) => user.email === email);
     const currentId = foundUser.userId
     setUserId(currentId)
     if (foundUser.password === password) {
-      localStorage.setItem("isLoggedIn", "1");
+      setItem("isLoggedIn", "1");
       setIsLoggedIn(true);
       history.push("/home");
     } else {
@@ -34,7 +35,7 @@ function App() {
   };
 
   useEffect(() => {
-    const storedIsLoggedInInformation = localStorage.getItem("isLoggedIn");
+    const storedIsLoggedInInformation = getItem("isLoggedIn");
     if (storedIsLoggedInInformation === "1") {
       setIsLoggedIn(true);
     }

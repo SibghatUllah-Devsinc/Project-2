@@ -3,6 +3,7 @@ import { Prompt } from 'react-router-dom';
 import Card from '../../components/UI/Card/Card';
 import classes from './PostForm.module.css';
 import newContext from '../../components/Context/Auth-Context';
+import {getItem} from "../../api/posts";
 
 const PostForm = (props) => {
   const ctx = useContext(newContext)
@@ -12,12 +13,17 @@ const PostForm = (props) => {
 
   const submitFormHandler =(event) => {
     event.preventDefault();
-    const enteredAuthor = titleInputRef.current.value;
-    const enteredText = textInputRef.current.value;
-    const localPosts = JSON.parse(localStorage.getItem('posts'));
-    const currentPost = localPosts.length + 1
-    const userId = ctx.userId
-    props.onAddPost({ id:currentPost, userId:userId,title: enteredAuthor, body: enteredText });
+    if (titleInputRef.length >0 && textInputRef.length > 0){
+      const enteredAuthor = titleInputRef.current.value;
+      const enteredText = textInputRef.current.value;
+      const localPosts = JSON.parse(getItem('posts'));
+      const currentPost = localPosts.length + 1
+      const userId = ctx.userId
+      props.onAddPost({ id:currentPost, userId:userId,title: enteredAuthor, body: enteredText });
+    }else {
+      alert("Please fill all the inputs")
+    }
+
   }
   const focusHandler = ()=>{
      setIsEntered(true)

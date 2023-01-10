@@ -2,19 +2,20 @@ import React from 'react'
 import classes from '../../container/Login/Login.module.css'
 
 function Input(props){
+     const{isValid, id, label, type, value, onChange, onBlur}=props
 
     return <div
     className={`${classes.control} ${
-      props.isValid === false ? classes.invalid : ''
+      isValid === false ? classes.invalid : ''
     }`}
   >
-    <label htmlFor={props.id}>{props.label}</label>
+    <label htmlFor={id}>{label}</label>
     <input
-      type={props.type}
-      id={props.id}
-      value={props.value}
-      onChange={props.onChange}
-      onBlur={props.onBlur}
+      type={type}
+      id={id}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
     />
   </div>
 }

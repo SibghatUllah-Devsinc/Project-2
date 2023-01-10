@@ -1,15 +1,14 @@
-import React,{useContext} from 'react';
-import newContext from '../Context/Auth-Context';
 import classes from './Navigation.module.css';
 import { NavLink } from 'react-router-dom';
+import {getItem} from "../../api/posts";
 
 const Navigation = (props) => {
-const ctx = useContext(newContext)
+const {onLogout}=props
 
   return (
     <nav className={classes.nav}>
       <ul>
-      {ctx.isLoggedIn &&
+      {getItem("isLoggedIn") &&
       <>
           <li>
           <NavLink to="/home" activeClassName={classes.active}>Home</NavLink>
@@ -21,7 +20,7 @@ const ctx = useContext(newContext)
           <NavLink to="/deletePost" activeClassName={classes.active}>Delete Post Post</NavLink>
           </li>
           <li>
-            <button onClick={props.onLogout}>Logout</button>
+            <button onClick={onLogout}>Logout</button>
           </li>
         </>
         }

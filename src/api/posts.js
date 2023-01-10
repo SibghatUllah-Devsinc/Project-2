@@ -1,9 +1,10 @@
 
+const getItem=(input)=>{
+ return localStorage.getItem(input)
+}
 
-// const getPost = () => axios.get('URL')
+const setItem = (input,data)=>{
+  return localStorage.setItem(input, JSON.stringify(data))
+}
 
-// const addPost = (post) => axios.post('URL',post)
-
-// const updatePost = (post) => axios.put('URL',post)
-
-// const deletePost = (id) => axios.delete('URL')
+export {getItem,setItem}
